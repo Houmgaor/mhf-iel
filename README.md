@@ -17,7 +17,6 @@ If you're wondering 'Why use this instead of the original launcher?', here are s
   - Allows storing and displaying extra information. For example, it would be *possible* to get character portraits on the launcher window.
   - Removes the need to modify the launcher (since we're replacing it) and `mhfo-hd.dll` to remove GameGuard, since `mhfo-hd.dll` calls a function provided by the launcher to run GameGuard checks.
 
-
 ## Usage
 
 If calling from another Rust project, make sure it itself is targeting `nightly-i686-pc-windows-msvc`, and just call `run` with the correct parameters. The idea at the moment is that most of these parameters will be returned from the [signv2server](https://github.com/ZeruLight/Erupe/tree/main/server/signv2server) endpoints, but this might change in the future.
@@ -28,9 +27,21 @@ Feel free to create a ticket if you need another way to integrate this lib into 
 
 ## Compiling
 
-Before running `cargo build`, make sure you have the `nightly` toolchain and the `i686-pc-windows-msvc` target intalled:
+Make sure you have the `nightly` toolchain and the `i686-pc-windows-msvc` target intalled:
 
-```
+```bash
 rustup toolchain install nightly
 rustup target add i686-pc-windows-msvc
+# Build the .rlib file
+cargo build
+```
+
+The output is in `target/`.
+
+You may want to use `target/i686-pc-windows-msvc/debug/libmhf_iel.rlib`.
+
+Then, get a .exe with:
+
+```bash
+cargo build --package mhf-iel-cli --release
 ```
