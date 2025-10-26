@@ -26,7 +26,7 @@ Enter
 Enter
 Sleep 500ms
 
-Type "target/x86_64-unknown-linux-gnu/release/mhf-iel-auth --server http://localhost:8080 login --username mogapedia --password test --char-id 215"
+Type "target/x86_64-unknown-linux-gnu/release/mhf-iel-auth --server http://localhost:8080 login --username demo --password demo123 --char-id 311"
 Sleep 1s
 Enter
 
