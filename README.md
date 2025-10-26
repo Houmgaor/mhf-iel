@@ -1,6 +1,7 @@
 # MHF IELess Launcher
 
-MHF default launcher requires IE to login. IE sucks.
+Monster Hunter Fontier Launcher without Internet Explorer.
+Because IE sucks.
 
 This project reverse engineered the MHF launcher in order to make it possible to boot the game directly, without going through `mhf.exe` and `mhl.dll`.
 
