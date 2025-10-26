@@ -32,7 +32,7 @@ pub enum MhfVersion {
 }
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, Deserialize, TryFromPrimitive)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, TryFromPrimitive)]
 pub enum CliFlags {
     Selfup = 1,
     Restat = 2,
@@ -47,7 +47,7 @@ pub enum CliFlags {
 }
 
 #[repr(u32)]
-#[derive(Debug, Clone, Copy, Deserialize, TryFromPrimitive)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, TryFromPrimitive)]
 pub enum MezFesStall {
     TokotokoPartnya = 2,
     Pachinko = 3,
@@ -60,13 +60,13 @@ pub enum MezFesStall {
     StallMap = 10,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Notice {
     pub flags: u16,
     pub data: String,
 }
 
-#[derive(Debug, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct MhfConfig {
     pub char_id: u32,
     pub char_name: String,

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Cross-platform build support for Windows from Linux using cargo-xwin.
 - Instructions for Linux-based build.
+- Get `config.json` from the comfort of the Rust CLI.
 
 ### Changed
 

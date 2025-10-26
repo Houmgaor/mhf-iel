@@ -1,5 +1,5 @@
 [workspace]
-members = ["mhf-iel-cli"]
+members = [ "mhf-iel-auth","mhf-iel-cli"]
 
 [package]
 name = "mhf-iel"

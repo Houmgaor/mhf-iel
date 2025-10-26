@@ -1,0 +1,14 @@
+[package]
+name = "mhf-iel-auth"
+version = "0.1.0"
+edition = "2021"
+description = "Authentication CLI for MHF IEL - fetches config from server"
+
+[dependencies]
+mhf-iel = { path = ".." }
+serde = { workspace = true }
+serde_json = "1.0"
+clap = { version = "4.4.7", features = ["derive"] }
+reqwest = { version = "0.11", features = ["blocking", "json", "rustls-tls"], default-features = false }
+dialoguer = "0.11"
+anyhow = "1.0"

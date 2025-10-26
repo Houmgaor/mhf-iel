@@ -20,6 +20,30 @@ If you're wondering 'Why use this instead of the original launcher?', here are s
 
 ## Usage
 
+### Option 1: Using the Auth Tool (Recommended)
+
+The [mhf-iel-auth](mhf-iel-auth/README.md) tool provides an interactive CLI to fetch config from your server:
+
+```bash
+# Interactive mode - prompts you for everything
+mhf-iel-auth
+
+# Or specify server and login directly
+mhf-iel-auth --server http://your-server.com:8080 login
+```
+
+Features:
+
+- User-friendly prompts for username/password
+- Character selection menu
+- Automatic config.json generation
+- No Python or external dependencies
+- Works on Windows and Linux
+
+**Note:** Requires a running [Erupe server](https://github.com/ZeruLight/Erupe) with API endpoints (`/login`, `/register`, `/character`).
+
+### Option 2: Manual Config (Development/Testing)
+
 If calling from another Rust project, make sure it itself is targeting `nightly-i686-pc-windows-msvc`, and just call `run` with the correct parameters. The idea at the moment is that most of these parameters will be returned from the [signv2server](https://github.com/ZeruLight/Erupe/tree/main/server/signv2server) endpoints, but this might change in the future.
 
 You can also use the [CLI interface](mhf-iel-cli/README.md) to run this project from any other program, and without the `i686` limitation.
