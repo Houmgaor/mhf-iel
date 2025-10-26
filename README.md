@@ -27,17 +27,20 @@ Feel free to create a ticket if you need another way to integrate this lib into 
 
 ## Build
 
-Make sure you have the `nightly` toolchain and the `i686-pc-windows-msvc` target intalled:
+The Windows build is recommended as it has a more direct setup, but you can use the Linux build as weel.
 
-```bash
-rustup toolchain install nightly
-```
-
-### On Windows
+First, add the build target:
 
 ```bash
 rustup target add i686-pc-windows-msvc
-cargo build  # Build the .rlib file
+```
+
+### On Windows (recommended)
+
+Simply build:
+
+```bash
+cargo build  # (optional) build the .rlib file
 cargo build --package mhf-iel-cli --release  # Build the CLI .exe
 ```
 

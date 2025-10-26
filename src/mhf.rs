@@ -518,7 +518,7 @@ pub fn run_mhf(config: crate::MhfConfig) -> Result<isize> {
 
     let (data_ptr, proc, mhfo_module) = match config.version {
         MhfVersion::F5 => {
-            let mut data = unsafe { Box::<DataF5>::new_zeroed().assume_init() };
+            let mut data: Box<DataF5> = unsafe { Box::new(std::mem::zeroed()) };
             let dll_name = s!("mhfo.dll");
             // Required in order to skip initial GG check
             std::env::set_var("JKR", "1");
@@ -548,7 +548,7 @@ pub fn run_mhf(config: crate::MhfConfig) -> Result<isize> {
             )
         }
         MhfVersion::ZZ => {
-            let mut data = unsafe { Box::<DataZZ>::new_zeroed().assume_init() };
+            let mut data: Box<DataZZ> = unsafe { Box::new(std::mem::zeroed()) };
             let graphics_ver =
                 unsafe { GetPrivateProfileIntA(s!("VIDEO"), s!("GRAPHICS_VER"), 1, ini_file) };
             let dll_name = if graphics_ver == 1 {
