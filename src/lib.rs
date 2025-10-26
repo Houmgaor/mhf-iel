@@ -1,5 +1,3 @@
-#![feature(generic_arg_infer)]
-#![feature(new_uninit)]
 mod error;
 mod mhf;
 mod utils;
