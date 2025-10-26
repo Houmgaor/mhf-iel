@@ -1,2 +1,7 @@
-/target
+# User settings
 config.local.json
+
+# Build cache
+.xwin-cache/
+# Build location
+/target

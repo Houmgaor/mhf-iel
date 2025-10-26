@@ -43,17 +43,20 @@ cargo build --package mhf-iel-cli --release  # Build the CLI .exe
 
 ### On Linux (cross-compile)
 
-Use the GNU target:
+**Recommended:** Use `cargo-xwin` to build the MSVC target (best compatibility):
+
+```bash
+cargo install cargo-xwin xwin
+xwin --accept-license --arch x86 splat --output ~/.cache/cargo-xwin/xwin
+cargo xwin build --package mhf-iel-cli --target i686-pc-windows-msvc --release
+```
+
+**Alternative:** Use GNU target (may have compatibility issues with the game's MSVC DLLs):
 
 ```bash
 cargo install cross
 rustup target add i686-pc-windows-gnu
-```
-
-We recommend using `cross`:
-
-```bash
 cross build --package mhf-iel-cli --target i686-pc-windows-gnu --release
 ```
 
-The output is in `target/`
+The output is in `target/i686-pc-windows-msvc/release/` or `target/i686-pc-windows-gnu/release/`
