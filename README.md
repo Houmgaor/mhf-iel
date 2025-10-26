@@ -25,23 +25,35 @@ You can also use the [CLI interface](mhf-iel-cli/README.md) to run this project 
 
 Feel free to create a ticket if you need another way to integrate this lib into your app (`.dll`, bindings for static linking, etc).
 
-## Compiling
+## Build
 
 Make sure you have the `nightly` toolchain and the `i686-pc-windows-msvc` target intalled:
 
 ```bash
 rustup toolchain install nightly
-rustup target add i686-pc-windows-msvc
-# Build the .rlib file
-cargo build
 ```
 
-The output is in `target/`.
-
-You may want to use `target/i686-pc-windows-msvc/debug/libmhf_iel.rlib`.
-
-Then, get a .exe with:
+### On Windows
 
 ```bash
-cargo build --package mhf-iel-cli --release
+rustup target add i686-pc-windows-msvc
+cargo build  # Build the .rlib file
+cargo build --package mhf-iel-cli --release  # Build the CLI .exe
 ```
+
+### On Linux (cross-compile)
+
+Use the GNU target:
+
+```bash
+cargo install cross
+rustup target add i686-pc-windows-gnu
+```
+
+We recommend using `cross`:
+
+```bash
+cross build --package mhf-iel-cli --target i686-pc-windows-gnu --release
+```
+
+The output is in `target/`
