@@ -20,6 +20,10 @@ If you're wondering 'Why use this instead of the original launcher?', here are s
 
 ## Usage
 
+![MHF IEL Auth Demo](demos/auth-demo.gif)
+
+> Quick demo: Authenticating with the server and generating game config
+
 ### Option 1: Using the Auth Tool (Recommended)
 
 The [mhf-iel-auth](mhf-iel-auth/README.md) tool provides an interactive CLI to fetch config from your server:

@@ -2,6 +2,8 @@
 
 A user-friendly Rust CLI tool that fetches configuration from your MHF server and generates `config.json` for the game launcher.
 
+![MHF IEL Auth Demo](../demos/auth-demo.gif)
+
 ## Features
 
 - Interactive CLI interface with prompts
