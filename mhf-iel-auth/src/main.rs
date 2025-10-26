@@ -3,6 +3,7 @@ use clap::{Parser, Subcommand};
 use dialoguer::{Input, Password, Select};
 use mhf_iel::MhfConfig;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
@@ -31,6 +32,8 @@ enum Commands {
         username: Option<String>,
         #[arg(short, long, help = "Password (will prompt if not provided)")]
         password: Option<String>,
+        #[arg(short = 'c', long, help = "Character ID to use (auto-select first if not provided)")]
+        char_id: Option<u32>,
     },
     /// Register new account
     Register {
@@ -38,6 +41,8 @@ enum Commands {
         username: Option<String>,
         #[arg(short, long, help = "Password (will prompt if not provided)")]
         password: Option<String>,
+        #[arg(short = 'c', long, help = "Character ID to use (auto-select first if not provided)")]
+        char_id: Option<u32>,
     },
 }
 
@@ -105,7 +110,47 @@ struct MezFes {
     solo_tickets: u32,
     #[serde(rename = "groupTickets")]
     group_tickets: u32,
+    #[serde(deserialize_with = "deserialize_stalls")]
     stalls: Vec<String>,
+}
+
+fn deserialize_stalls<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde::de::{Deserialize, Error};
+    use serde_json::Value;
+
+    let value = Value::deserialize(deserializer)?;
+
+    match value {
+        Value::Array(arr) => {
+            let stalls: Vec<String> = arr
+                .into_iter()
+                .filter_map(|v| match v {
+                    Value::String(s) => Some(s),
+                    Value::Number(n) => {
+                        // Convert number to stall name
+                        let stall_id = n.as_u64().unwrap_or(0) as u32;
+                        Some(match stall_id {
+                            3 => "Pachinko",
+                            4 => "Nyanrendo",
+                            5 => "DokkanBattleCats",
+                            6 => "VolpakkunTogether",
+                            7 => "PointStall",
+                            8 => "HoneyPanic",
+                            9 => "GoocooScoop",
+                            10 => "TokotokoPartnya",
+                            _ => "StallMap",
+                        }.to_string())
+                    }
+                    _ => None,
+                })
+                .collect();
+            Ok(stalls)
+        }
+        _ => Err(D::Error::custom("expected array for stalls")),
+    }
 }
 
 #[derive(Debug, Serialize)]
@@ -143,21 +188,23 @@ fn main() -> Result<()> {
             0 => Commands::Login {
                 username: None,
                 password: None,
+                char_id: None,
             },
             1 => Commands::Register {
                 username: None,
                 password: None,
+                char_id: None,
             },
             _ => unreachable!(),
         }
     });
 
     match command {
-        Commands::Login { username, password } => {
-            authenticate(&cli.server, "login", username, password)?;
+        Commands::Login { username, password, char_id } => {
+            authenticate(&cli.server, "login", username, password, char_id)?;
         }
-        Commands::Register { username, password } => {
-            authenticate(&cli.server, "register", username, password)?;
+        Commands::Register { username, password, char_id } => {
+            authenticate(&cli.server, "register", username, password, char_id)?;
         }
     }
 
@@ -169,6 +216,7 @@ fn authenticate(
     action: &str,
     username: Option<String>,
     password: Option<String>,
+    char_id: Option<u32>,
 ) -> Result<()> {
     // Get credentials
     let username = match username {
@@ -214,11 +262,20 @@ fn authenticate(
     println!("Token: {}", login_data.user.token);
 
     // Character selection
-    let (char_id, char_data) = if login_data.characters.is_empty() {
+    let (selected_char_id, char_data) = if login_data.characters.is_empty() {
         println!("\nNo characters found. Creating new character...");
         let new_char = create_character(server, &login_data.user.token)?;
         (new_char.id, new_char)
+    } else if let Some(id) = char_id {
+        // Use specified character ID (non-interactive mode)
+        let char_data = login_data.characters.iter()
+            .find(|c| c.id == id)
+            .context(format!("Character ID {} not found", id))?
+            .clone();
+        println!("\nUsing character: {} (ID: {})", char_data.name, char_data.id);
+        (id, char_data)
     } else {
+        // Interactive character selection
         let result = select_or_create_character(server, &login_data.user.token, &login_data.characters)?;
         match result {
             CharSelection::Existing(id) => {
@@ -230,7 +287,7 @@ fn authenticate(
     };
 
     // Build config
-    let config = build_config(server, &login_data, char_id, &char_data)?;
+    let config = build_config(server, &login_data, selected_char_id, &char_data)?;
 
     // Save config to file
     let config_path = PathBuf::from("config.json");

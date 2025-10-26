@@ -19,6 +19,9 @@ A user-friendly Rust CLI tool that fetches configuration from your MHF server an
 Simply run without arguments for an interactive experience:
 
 ```bash
+cargo build --package mhf-iel-auth --release
+# Generates a script under ./target/<your build target>/release/mhf-iel-auth
+# We will refer to it as "mhf-iel-auth"
 mhf-iel-auth
 ```
 
@@ -57,12 +60,11 @@ mhf-iel-auth --server http://your-server.com:8080 login
 
 ## Build
 
+**IMPORTANT:** Due to the workspace default target being `i686-pc-windows-msvc` (for the game launcher), you **must** specify the `--target` flag when building `mhf-iel-auth`. Otherwise, it will try to cross-compile for Windows and fail on Linux.
+
 ```bash
 # For Linux
 cargo build --package mhf-iel-auth --target x86_64-unknown-linux-gnu --release
-
-# For Windows
-cargo xwin build --package mhf-iel-auth --target x86_64-pc-windows-msvc --release
 ```
 
 ## Server API Requirements
@@ -109,8 +111,6 @@ Your MHF server must implement these endpoints:
 }
 ```
 
-See [SERVER_API.md](../SERVER_API.md) for full API specification.
-
 ## Output
 
 The tool generates a `config.json` file that can be used directly with `mhf-iel-cli`:
@@ -134,6 +134,9 @@ mhf-iel-cli.exe
 ```
 
 ## Why This Instead of Python GUI?
+
+The original fork for this project used a Python GUI.
+It was removed in this fork and replaced by a CLI for several reasons:
 
 - **Single executable**: No Python installation required
 - **Cross-platform**: Works on Windows and Linux

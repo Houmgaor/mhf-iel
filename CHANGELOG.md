@@ -10,7 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Cross-platform build support for Windows from Linux using cargo-xwin.
 - Instructions for Linux-based build.
-- Get `config.json` from the comfort of the Rust CLI.
+- **CLI Launcher**
+  - Connect to Erupe from the comfort of the CLI.
+  - It generates `config.json` for next uses.
 
 ### Changed
 
@@ -26,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Nightly Rust requirement.
 - Feature attributes for `generic_arg_infer` and `new_uninit`, now stable.
+- `gui.py`: replaced by the CLI launcher.
 
 ## [0.4] - 2023-10-29
 
